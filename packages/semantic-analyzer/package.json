@@ -1,0 +1,23 @@
+{
+  "name": "bhai-lang-semantic-analyzer",
+  "version": "0.0.1",
+  "description": "Semantic analyzer for bhai-lang",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/module.js",
+  "scripts": {
+    "build": "tsup src/* --dts",
+    "test": "jest --coverage"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^10.4.0",
+    "tsup": "^5.11.11",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
+    "@types/jest": "^27.4.0",
+    "tsconfig": "*",
+    "bhai-lang-parser": "*"
+  }
+}

@@ -1,0 +1,9 @@
+hi bhai
+  bhai ye hai a = 10;
+  bhai ye hai b = 20;
+  bol bhai a + b;
+  jab tak bhai (a < 15) {
+    bol bhai a;
+    a = a + 1;
+  }
+bye bhai

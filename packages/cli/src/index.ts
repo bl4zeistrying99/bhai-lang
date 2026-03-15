@@ -38,16 +38,24 @@ const filePath = yargs(hideBin(process.argv))
   )
   .demandCommand(1).argv._[0];
 
-fs.readFile(filePath, "utf8", (err, data) => {
+fs.readFile(filePath, 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
   }
   try {
+    const parser = require('bhai-lang-parser').default;
+    const { analyze } = require('bhai-lang-semantic-analyzer');
+    const ast = parser.parse(data);
+    analyze(ast);
     interpreter.interpret(data);
   } catch (ex) {
     if (ex instanceof Error) {
-      console.error("\n", chalk.redBright(ex.stack));
+      if (ex.name === 'SemanticError') {
+        console.error('\n', chalk.redBright(`${ex.name}: ${ex.message}`));
+      } else {
+        console.error('\n', chalk.redBright(ex.stack));
+      }
     }
   }
 });
