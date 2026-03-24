@@ -1,0 +1,36 @@
+hi bhai
+
+  bhai ye hai score = 0;
+  bhai ye hai level = 1;
+  bhai ye hai message = "shuru karte hain";
+
+  bol bhai message;
+  bol bhai score;
+
+  jab tak bhai (score < 30) {
+
+    bhai ye hai bonus = 10;
+
+    score = score + bonus;
+    level = level + 1;
+
+    bol bhai "Level: ", level;
+    bol bhai "Score: ", score;
+
+    agar bhai (score == 20) {
+      bhai ye hai milestone = "halfway";
+      bol bhai milestone;
+    } warna bhai {
+      bhai ye hai milestone = "keep going";
+      bol bhai milestone;
+    }
+
+    agar bhai (score == 30) {
+      bas kar bhai;
+    }
+
+  }
+
+  bol bhai "Game over. Final score: ", score;
+
+bye bhai

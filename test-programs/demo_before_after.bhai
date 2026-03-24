@@ -1,0 +1,7 @@
+hi bhai
+  bhai ye hai score = 0;
+  bol bhai score;
+  bol bhai highscore;
+  score = score + 10;
+  bol bhai "done";
+bye bhai
