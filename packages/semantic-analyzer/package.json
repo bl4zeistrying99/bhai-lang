@@ -12,12 +12,13 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "ts-node": "^10.4.0",
-    "tsup": "^5.11.11",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^25.5.2",
+    "bhai-lang-parser": "*",
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
-    "@types/jest": "^27.4.0",
+    "ts-node": "^10.4.0",
     "tsconfig": "*",
-    "bhai-lang-parser": "*"
+    "tsup": "^5.11.11"
   }
 }

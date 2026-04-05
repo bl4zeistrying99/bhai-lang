@@ -42,15 +42,16 @@
   },
   "homepage": "https://github.com/DulLabs/bhai-lang#readme",
   "devDependencies": {
-    "ts-node": "^10.4.0",
-    "ts-jest": "^27.1.2",
-    "tsup": "^5.11.11",
-    "jest": "^27.4.5",
-    "yargs": "^17.3.1",
-    "chalk": "^5.0.0",
     "@types/jest": "^27.4.0",
+    "@types/node": "^25.5.2",
+    "bhai-lang-interpreter": "*",
+    "chalk": "^5.0.0",
     "config": "*",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
     "tsconfig": "*",
-    "bhai-lang-interpreter": "*"
+    "tsup": "^5.11.11",
+    "yargs": "^17.3.1"
   }
 }
