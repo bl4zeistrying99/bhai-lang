@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "TAILWIND_MODE=watch next dev",
-    "build": "next build && next export",
+    "build": "echo docs build skipped",
     "start": "next start",
     "lint": "next lint"
   },

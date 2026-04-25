@@ -1,0 +1,15 @@
+{
+  "HI_BHAI": "start",
+  "BYE_BHAI": "end",
+  "BOL_BHAI": "print",
+  "BHAI_YE_HAI": "var",
+  "JAB_TAK_BHAI": "while",
+  "BAS_KAR_BHAI": "break",
+  "AGAR_BHAI": "if",
+  "WARNA_BHAI": "else",
+  "NAHI_TO_BHAI": "elif",
+  "AGLA_DEKH_BHAI": "continue",
+  "NALLA": "pass",
+  "SAHI": "True",
+  "GALAT": "False"
+}

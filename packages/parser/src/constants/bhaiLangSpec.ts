@@ -1,125 +1,121 @@
+import { KeywordMap, loadKeywords } from './keywordLoader';
+
 export const TokenTypes = {
   NULL_TYPE: null,
-
   HI_BHAI_TYPE: "hi bhai",
-
   BYE_BHAI_TYPE: "bye bhai",
-
   BOL_BHAI_TYPE: "bol bhai",
-
   BHAI_YE_HAI_TYPE: "bhai ye hai",
-
   AGAR_BHAI: "agar bhai",
-
   WARNA_BHAI: "warna bhai",
-
   NAHI_TO_BHAI: "nahi to bhai",
-
   JAB_TAK_BHAI: "jab tak bhai",
-
   BAS_KAR_BHAI: "bas kar bhai",
-
   AGLA_DEKH_BHAI: "agla dekh bhai",
-
   NALLA_TYPE: "NALLA",
-
   SEMI_COLON_TYPE: ";",
-
   OPEN_CURLY_BRACE_TYPE: "{",
-
   CLOSED_CURLY_BRACE_TYPE: "}",
-
   OPEN_PARENTHESIS_TYPE: "(",
-
   CLOSED_PARENTHESIS_TYPE: ")",
-
   COMMA_TYPE: ",",
-
   NUMBER_TYPE: "NUMBER",
-
   IDENTIFIER_TYPE: "IDENTIFIER",
-
   SIMPLE_ASSIGN_TYPE: "SIMPLE_ASSIGN",
-
   COMPLEX_ASSIGN_TYPE: "COMPLEX_ASSIGN",
-
   ADDITIVE_OPERATOR_TYPE: "ADDITIVE_OPERATOR",
-
   MULTIPLICATIVE_OPERATOR_TYPE: "MULTIPLICATIVE_OPERATOR",
-
   RELATIONAL_OPERATOR: "RELATIONAL_OPERATOR",
-
   EQUALITY_OPERATOR: "EQUALITY_OPERATOR",
-
   STRING_TYPE: "STRING",
-
   BOOLEAN_TYPE: "BOOLEAN",
-
   LOGICAL_AND: "LOGICAL_AND",
-
   LOGICAL_OR: "LOGICAL_OR"
 };
 
-export const SPEC = [
-  // Whitespcaes
-  { regex: /^\s+/, tokenType: TokenTypes.NULL_TYPE },
+/**
+ * Escapes a string so it can be safely embedded in a RegExp.
+ */
+function escapeRegex(str: string): RegExp {
+  const escaped = str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`^\\b${escaped}\\b`);
+}
 
-  // singke line Comments
-  { regex: /^\/\/.*/, tokenType: TokenTypes.NULL_TYPE },
+/**
+ * Builds the tokenizer SPEC from a KeywordMap.
+ * Called once at module initialization time.
+ * If BHAI_KEYWORDS env variable is set, custom keywords are merged in.
+ */
+export function buildSpec(keywords: KeywordMap) {
+  return [
+    // Whitespace (skip)
+    { regex: /^\s+/, tokenType: TokenTypes.NULL_TYPE },
 
-  // multi line comments
-  { regex: /^\/\*[\s\S]*?\*\//, tokenType: TokenTypes.NULL_TYPE },
+    // Single line comments (skip)
+    { regex: /^\/\/.*/, tokenType: TokenTypes.NULL_TYPE },
 
-  // Symbols, delimiters
-  { regex: /^;/, tokenType: TokenTypes.SEMI_COLON_TYPE },
-  { regex: /^\{/, tokenType: TokenTypes.OPEN_CURLY_BRACE_TYPE },
-  { regex: /^\}/, tokenType: TokenTypes.CLOSED_CURLY_BRACE_TYPE },
-  { regex: /^\(/, tokenType: TokenTypes.OPEN_PARENTHESIS_TYPE },
-  { regex: /^\)/, tokenType: TokenTypes.CLOSED_PARENTHESIS_TYPE },
-  { regex: /^,/, tokenType: TokenTypes.COMMA_TYPE },
+    // Multi line comments (skip)
+    { regex: /^\/\*[\s\S]*?\*\//, tokenType: TokenTypes.NULL_TYPE },
 
-  //Keywords
-  { regex: /^\bhi bhai\b/, tokenType: TokenTypes.HI_BHAI_TYPE },
-  { regex: /^\bbye bhai\b/, tokenType: TokenTypes.BYE_BHAI_TYPE },
-  { regex: /^\bbol bhai\b/, tokenType: TokenTypes.BOL_BHAI_TYPE },
-  { regex: /^\bbhai ye hai\b/, tokenType: TokenTypes.BHAI_YE_HAI_TYPE },
-  { regex: /^\bagar bhai\b/, tokenType: TokenTypes.AGAR_BHAI },
-  { regex: /^\bnahi to bhai\b/, tokenType: TokenTypes.NAHI_TO_BHAI },
-  { regex: /^\bwarna bhai\b/, tokenType: TokenTypes.WARNA_BHAI },
-  { regex: /^\bnalla\b/, tokenType: TokenTypes.NALLA_TYPE },
-  { regex: /^\bjab tak bhai\b/, tokenType: TokenTypes.JAB_TAK_BHAI },
-  { regex: /^\bbas kar bhai\b/, tokenType: TokenTypes.BAS_KAR_BHAI },
-  { regex: /^\bagla dekh bhai\b/, tokenType: TokenTypes.AGLA_DEKH_BHAI },
+    // Symbols and delimiters
+    { regex: /^;/,  tokenType: TokenTypes.SEMI_COLON_TYPE },
+    { regex: /^\{/, tokenType: TokenTypes.OPEN_CURLY_BRACE_TYPE },
+    { regex: /^\}/, tokenType: TokenTypes.CLOSED_CURLY_BRACE_TYPE },
+    { regex: /^\(/, tokenType: TokenTypes.OPEN_PARENTHESIS_TYPE },
+    { regex: /^\)/, tokenType: TokenTypes.CLOSED_PARENTHESIS_TYPE },
+    { regex: /^,/,  tokenType: TokenTypes.COMMA_TYPE },
 
-  // Number
-  { regex: /^[+-]?([\d]*[.])?[\d]+/, tokenType: TokenTypes.NUMBER_TYPE },
+    // Keywords — built dynamically from keyword map
+    { regex: escapeRegex(keywords.HI_BHAI),       tokenType: TokenTypes.HI_BHAI_TYPE },
+    { regex: escapeRegex(keywords.BYE_BHAI),      tokenType: TokenTypes.BYE_BHAI_TYPE },
+    { regex: escapeRegex(keywords.BOL_BHAI),      tokenType: TokenTypes.BOL_BHAI_TYPE },
+    { regex: escapeRegex(keywords.BHAI_YE_HAI),   tokenType: TokenTypes.BHAI_YE_HAI_TYPE },
+    { regex: escapeRegex(keywords.AGAR_BHAI),     tokenType: TokenTypes.AGAR_BHAI },
+    { regex: escapeRegex(keywords.NAHI_TO_BHAI),  tokenType: TokenTypes.NAHI_TO_BHAI },
+    { regex: escapeRegex(keywords.WARNA_BHAI),    tokenType: TokenTypes.WARNA_BHAI },
+    { regex: escapeRegex(keywords.NALLA),         tokenType: TokenTypes.NALLA_TYPE },
+    { regex: escapeRegex(keywords.JAB_TAK_BHAI),  tokenType: TokenTypes.JAB_TAK_BHAI },
+    { regex: escapeRegex(keywords.BAS_KAR_BHAI),  tokenType: TokenTypes.BAS_KAR_BHAI },
+    { regex: escapeRegex(keywords.AGLA_DEKH_BHAI),tokenType: TokenTypes.AGLA_DEKH_BHAI },
 
-  // Boolean
-  { regex: /^\bsahi\b/, tokenType: TokenTypes.BOOLEAN_TYPE },
-  { regex: /^\bgalat\b/, tokenType: TokenTypes.BOOLEAN_TYPE },
+    // Number (supports floats)
+    { regex: /^[+-]?([\d]*[.])?[\d]+/, tokenType: TokenTypes.NUMBER_TYPE },
 
-  // Identifier
-  { regex: /^\w+/, tokenType: TokenTypes.IDENTIFIER_TYPE },
+    // Booleans — also configurable
+    { regex: escapeRegex(keywords.SAHI),  tokenType: TokenTypes.BOOLEAN_TYPE },
+    { regex: escapeRegex(keywords.GALAT), tokenType: TokenTypes.BOOLEAN_TYPE },
 
-  // Equality operator: ==, !=
-  {regex: /^[=!]=/, tokenType: TokenTypes.EQUALITY_OPERATOR},
+    // Identifier (must come after keywords)
+    { regex: /^\w+/, tokenType: TokenTypes.IDENTIFIER_TYPE },
 
-  // Assignment operators: =, *=, /=, +=, -=
-  { regex: /^=/, tokenType: TokenTypes.SIMPLE_ASSIGN_TYPE },
-  { regex: /^[\*\%\/\+\-]=/, tokenType: TokenTypes.COMPLEX_ASSIGN_TYPE },
+    // Equality operators: ==, !=
+    { regex: /^[=!]=/, tokenType: TokenTypes.EQUALITY_OPERATOR },
 
-  // operator
-  { regex: /^[+\-]/, tokenType: TokenTypes.ADDITIVE_OPERATOR_TYPE },
-  { regex: /^[*\/\%]/, tokenType: TokenTypes.MULTIPLICATIVE_OPERATOR_TYPE },
-  {regex: /^[><]=?/, tokenType: TokenTypes.RELATIONAL_OPERATOR},
+    // Assignment operators: =, *=, /=, +=, -=
+    { regex: /^=/,           tokenType: TokenTypes.SIMPLE_ASSIGN_TYPE },
+    { regex: /^[\*\%\/\+\-]=/, tokenType: TokenTypes.COMPLEX_ASSIGN_TYPE },
 
-  // logical operators: &&, ||
-  {regex: /^&&/, tokenType: TokenTypes.LOGICAL_AND},
-  {regex: /^\|\|/, tokenType: TokenTypes.LOGICAL_OR},
+    // Arithmetic operators
+    { regex: /^[+\-]/,  tokenType: TokenTypes.ADDITIVE_OPERATOR_TYPE },
+    { regex: /^[*\/\%]/, tokenType: TokenTypes.MULTIPLICATIVE_OPERATOR_TYPE },
 
-  // String
-  { regex: /^"[^"]*"/, tokenType: TokenTypes.STRING_TYPE },
-  { regex: /^'[^']*'/, tokenType: TokenTypes.STRING_TYPE },
-];
+    // Relational operators: <, >, <=, >=
+    { regex: /^[><]=?/, tokenType: TokenTypes.RELATIONAL_OPERATOR },
+
+    // Logical operators: &&, ||
+    { regex: /^&&/,   tokenType: TokenTypes.LOGICAL_AND },
+    { regex: /^\|\|/, tokenType: TokenTypes.LOGICAL_OR },
+
+    // String literals
+    { regex: /^"[^"]*"/, tokenType: TokenTypes.STRING_TYPE },
+    { regex: /^'[^']*'/, tokenType: TokenTypes.STRING_TYPE },
+  ];
+}
+
+// Load keywords at module initialization time (once)
+const _keywords = loadKeywords();
+
+// Build and export the SPEC — used by BhaiLangModule
+export const SPEC = buildSpec(_keywords);
 
 export type Spec = typeof SPEC;

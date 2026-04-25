@@ -1,0 +1,19 @@
+start
+  var score = 0;
+  var message = "Khel shuru";
+
+  print message;
+
+  while(score < 30) {
+    score = score + 10;
+    print "Score hai:", score;
+
+    if (score == 30) {
+      print "Jeet gaye";
+    } else {
+      print "Aur khelo";
+    }
+  }
+
+  print "Final Score:", score;
+end
