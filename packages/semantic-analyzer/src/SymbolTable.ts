@@ -9,6 +9,7 @@ export default class SymbolTable {
 
   exitScope() {
     this.scopes.pop();
+    // console.log(this.scopes);
   }
 
   declare(identifier: string) {
